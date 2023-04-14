@@ -1,3 +1,5 @@
+local aimbotToggle = false
+
 function isEnemy(player)
     return player.TeamColor ~= game:GetService("Players").LocalPlayer.TeamColor
 end
@@ -22,7 +24,7 @@ function getNearestEnemyToCursor()
 end
 
 function aimbot()
-    while true do
+    while aimbotToggle do
         local target = getNearestEnemyToCursor()
         if target then
             local headPos = target.Character.Head.Position
@@ -32,4 +34,11 @@ function aimbot()
     end
 end
 
-aimbot()
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if input.KeyCode == Enum.KeyCode.X then
+        aimbotToggle = not aimbotToggle
+        if aimbotToggle then
+            aimbot()
+        end
+    end
+end)
